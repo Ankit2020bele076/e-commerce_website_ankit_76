@@ -1,5 +1,5 @@
-import { Fragment, useEffect, useState } from "react";
-import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
+import { Fragment, useState } from "react";
+import { Dialog, DialogPanel, Popover, PopoverButton, PopoverGroup, PopoverPanel, Tab, TabGroup, TabList, TabPanel, TabPanels, Transition, TransitionChild } from "@headlessui/react";
 import {
   Bars3Icon,
   MagnifyingGlassIcon,
@@ -46,7 +46,7 @@ export default function Navigation() {
       {/* Mobile menu */}
       <Transition show={open} as={Fragment}>
         <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
-          <Transition
+          <TransitionChild
             as={Fragment}
             enter="transition-opacity ease-linear duration-300"
             enterFrom="opacity-0"
@@ -56,10 +56,10 @@ export default function Navigation() {
             leaveTo="opacity-0"
           >
             <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition>
+          </TransitionChild>
 
           <div className="fixed inset-0 z-40 flex">
-            <Transition
+            <TransitionChild
               as={Fragment}
               enter="transition ease-in-out duration-300 transform"
               enterFrom="-translate-x-full"
@@ -68,7 +68,7 @@ export default function Navigation() {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <Dialog className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl">
+              <DialogPanel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl">
                 <div className="flex px-4 pb-2 pt-5">
                   <button
                     type="button"
@@ -81,9 +81,9 @@ export default function Navigation() {
                 </div>
 
                 {/* Links */}
-                <Tab as="div" className="mt-2">
+                <TabGroup as="div" className="mt-2">
                   <div className="border-b border-gray-200">
-                    <Tab className="-mb-px flex space-x-8 px-4">
+                    <TabList className="-mb-px flex space-x-8 px-4">
                       {navigation.categories.map((category) => (
                         <Tab
                           key={category.name}
@@ -99,11 +99,11 @@ export default function Navigation() {
                           {category.name}
                         </Tab>
                       ))}
-                    </Tab>
+                    </TabList>
                   </div>
-                  <Tab as={Fragment}>
+                  <TabPanels as={Fragment}>
                     {navigation.categories.map((category) => (
-                      <Tab
+                      <TabPanel
                         key={category.name}
                         className="space-y-10 px-4 pb-8 pt-10"
                       >
@@ -160,10 +160,10 @@ export default function Navigation() {
                             </ul>
                           </div>
                         ))}
-                      </Tab>
+                      </TabPanel>
                     ))}
-                  </Tab>
-                </Tab>
+                  </TabPanels>
+                </TabGroup>
 
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
                   {navigation.pages.map((page) => (
@@ -202,8 +202,8 @@ export default function Navigation() {
                     <span className="sr-only">, change currency</span>
                   </a>
                 </div>
-              </Dialog>
-            </Transition>
+              </DialogPanel>
+            </TransitionChild>
           </div>
         </Dialog>
       </Transition>
@@ -236,14 +236,14 @@ export default function Navigation() {
               </div>
 
               {/* Flyout menus */}
-              <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch z-10">
+              <PopoverGroup className="hidden lg:ml-8 lg:block lg:self-stretch z-10">
                 <div className="flex h-full space-x-8">
                   {navigation.categories.map((category) => (
                     <Popover key={category.name} className="flex">
                       {({ open, close }) => (
                         <>
                           <div className="relative flex">
-                            <Popover.Button
+                            <PopoverButton
                               className={classNames(
                                 open
                                   ? "border-indigo-600 text-indigo-600"
@@ -252,7 +252,7 @@ export default function Navigation() {
                               )}
                             >
                               {category.name}
-                            </Popover.Button>
+                            </PopoverButton>
                           </div>
 
                           <Transition
@@ -264,7 +264,7 @@ export default function Navigation() {
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                           >
-                            <Popover.Panel className="absolute inset-x-0 top-full text-sm text-gray-500">
+                            <PopoverPanel className="absolute inset-x-0 top-full text-sm text-gray-500">
                               {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
                               <div
                                 className="absolute inset-0 top-1/2 bg-white shadow"
@@ -348,7 +348,7 @@ export default function Navigation() {
                                   </div>
                                 </div>
                               </div>
-                            </Popover.Panel>
+                            </PopoverPanel>
                           </Transition>
                         </>
                       )}
@@ -365,7 +365,7 @@ export default function Navigation() {
                     </a>
                   ))}
                 </div>
-              </Popover.Group>
+              </PopoverGroup>
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
