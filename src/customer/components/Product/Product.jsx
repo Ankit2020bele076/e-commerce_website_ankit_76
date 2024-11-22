@@ -20,6 +20,7 @@ import { mens_kurta } from '../../../Data/mens_kurta'
 import { filters, singleFilter } from './FilterData'
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material'
 import FilterListIcon from '@mui/icons-material/FilterList';
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const sortOptions = [
   { name: 'Price: Low to High', href: '#', current: false },
@@ -33,6 +34,35 @@ function classNames(...classes) {
 
 export default function Product() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleFilter=(value,sectionId)=>{
+    const searchParams = new URLSearchParams(location.search);
+    let filterValue = searchParams.getAll(sectionId);
+    if(filterValue.length > 0 && filterValue[0].split(",").includes(value)){
+      filterValue = filterValue[0].split(",").filter((item)=>item!==value);
+
+      if(filterValue.length === 0){
+        searchParams.delete(sectionId);
+      }
+    }
+    else{
+      filterValue.push(value);
+    }
+    if(filterValue.length > 0){
+      searchParams.set(sectionId,filterValue.join(","));
+    }
+    const query = searchParams.toString();
+    navigate({search:`?${query}`}); 
+  }
+
+  const handleRadioFilterChange=(e,sectionId)=>{
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set(sectionId,e.target.value);
+    const query = searchParams.toString();
+    navigate({search:`?${query}`});
+  }
 
   return (
     <div className="bg-white">
@@ -80,6 +110,7 @@ export default function Product() {
                         {section.options.map((option, optionIdx) => (
                           <div key={option.value} className="flex items-center">
                             <input
+                              onChange={()=>handleFilter(option.value,section.id)}
                               defaultValue={option.value}
                               defaultChecked={option.checked}
                               id={`filter-mobile-${section.id}-${optionIdx}`}
@@ -103,7 +134,8 @@ export default function Product() {
                   <Disclosure key={section.id} as="div" className="border-t border-gray-200 px-4 py-6">
                     <h3 className="-mx-2 -my-3 flow-root">
                       <DisclosureButton className="group flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-gray-400 hover:text-gray-500">
-                        <span className="font-medium text-gray-900">{section.name}</span>
+                        {/* <span className="font-medium text-gray-900">{section.name}</span> */}
+                        <FormLabel sx={{color:"black"}} className="text-gray-900" id="demo-radio-buttons-group-label">{section.name}</FormLabel>
                         <span className="ml-6 flex items-center">
                           <PlusIcon aria-hidden="true" className="size-5 group-data-[open]:hidden" />
                           <MinusIcon aria-hidden="true" className="size-5 [.group:not([data-open])_&]:hidden" />
@@ -112,21 +144,19 @@ export default function Product() {
                     </h3>
                     <DisclosurePanel className="pt-6">
                       <div className="space-y-4">
+                      <FormControl>
+                      <RadioGroup
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            defaultValue="female"
+                            name="radio-buttons-group"
+                      >
                         {section.options.map((option, optionIdx) => (
-                          <div key={option.value} className="flex items-center">
-                            <input
-                              defaultValue={option.value}
-                              defaultChecked={option.checked}
-                              id={`filter-${section.id}-${optionIdx}`}
-                              name={`${section.id}[]`}
-                              type="checkbox"
-                              className="size-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                            />
-                            <label htmlFor={`filter-${section.id}-${optionIdx}`} className="ml-3 text-sm text-gray-600">
-                              {option.label}
-                            </label>
-                          </div>
+                          <>
+                            <FormControlLabel onChange={(e)=>handleRadioFilterChange(e,section.id)} sx={{color:"gray"}} value={option.value} control={<Radio />} label={option.label} />
+                          </>
                         ))}
+                        </RadioGroup>
+                        </FormControl>
                       </div>
                     </DisclosurePanel>
                   </Disclosure>
@@ -218,6 +248,7 @@ export default function Product() {
                         {section.options.map((option, optionIdx) => (
                           <div key={option.value} className="flex items-center">
                             <input
+                              onChange={()=>handleFilter(option.value,section.id)}
                               defaultValue={option.value}
                               defaultChecked={option.checked}
                               id={`filter-${section.id}-${optionIdx}`}
@@ -257,7 +288,7 @@ export default function Product() {
                       >
                         {section.options.map((option, optionIdx) => (
                           <>
-                            <FormControlLabel sx={{color:"gray"}} value={option.value} control={<Radio />} label={option.label} />
+                            <FormControlLabel onChange={(e)=>handleRadioFilterChange(e,section.id)} sx={{color:"gray"}} value={option.value} control={<Radio />} label={option.label} />
                           </>
                         ))}
                       </RadioGroup>
