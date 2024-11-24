@@ -17,8 +17,8 @@ function App() {
         {/* <Product /> */}
         {/* <ProductDetails /> */}
         {/* <Cart /> */}
-        {/* <Checkout /> */}
-        <Order />
+        <Checkout />
+        {/* <Order /> */}
       </div>
       <Footer />
     </div>
