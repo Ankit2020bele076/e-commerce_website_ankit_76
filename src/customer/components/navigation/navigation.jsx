@@ -10,6 +10,7 @@ import {
 import { Avatar, Button, Menu, MenuItem } from "@mui/material";
 import { navigation } from "./NavigationData";
 import { deepPurple } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -17,6 +18,8 @@ function classNames(...classes) {
 
 export default function Navigation() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
   const [openAuthModal, setOpenAuthModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const openUserMenu = Boolean(anchorEl);
@@ -37,7 +40,7 @@ export default function Navigation() {
   };
 
   const handleCategoryClick = (category, section, item, close) => {
-    // navigate(`/${category.id}/${section.id}/${item.id}`);
+    navigate(`/${category.id}/${section.id}/${item.name}`);
     close();
   };
 
@@ -152,7 +155,8 @@ export default function Navigation() {
                             >
                               {section.items.map((item) => (
                                 <li key={item.name} className="flow-root">
-                                  <p className="-m-2 block p-2 text-gray-500">
+                                  <p onClick={() => handleCategoryClick(category, section, item, () => setOpen(false))} 
+                                   className="cursor-pointer -m-2 block p-2 text-gray-500">
                                     {item.name}
                                   </p>
                                 </li>
@@ -189,7 +193,7 @@ export default function Navigation() {
                   </div>
                 </div>
 
-                <div className="border-t border-gray-200 px-4 py-6">
+                {/* <div className="border-t border-gray-200 px-4 py-6">
                   <a href="/" className="-m-2 flex items-center p-2">
                     <img
                       src="https://tailwindui.com/img/flags/flag-canada.svg"
@@ -201,7 +205,7 @@ export default function Navigation() {
                     </span>
                     <span className="sr-only">, change currency</span>
                   </a>
-                </div>
+                </div> */}
               </DialogPanel>
             </TransitionChild>
           </div>
@@ -368,7 +372,8 @@ export default function Navigation() {
               </PopoverGroup>
 
               <div className="ml-auto flex items-center">
-                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+              {/* hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 */}
+                <div className="flex flex-1 items-center justify-end space-x-6 sm:mr-6">
                   {true ? (
                     <div>
                       <Avatar
@@ -404,7 +409,7 @@ export default function Navigation() {
                           "aria-labelledby": "basic-button",
                         }}
                       >
-                        <MenuItem>
+                        <MenuItem onClick={()=>navigate('/account/order')}>
                           My Orders
                         </MenuItem>
                         <MenuItem >Logout</MenuItem>
