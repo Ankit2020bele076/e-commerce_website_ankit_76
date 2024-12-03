@@ -1,10 +1,20 @@
 import { Box, Button, Grid2, TextField } from "@mui/material";
 import React from "react";
 import AddressCard from "../AddressCard/AddressCard";
+import { useDispatch, useSelector } from "react-redux";
+import { createOrder } from "../../../State/Order/Action";
+import { useNavigate } from "react-router-dom";
 
 const DeliveryAddressForm = () => {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const {order} = useSelector(store => store);
+    console.log(order);
+
     const handleSubmit=(e)=>{
         e.preventDefault();
+        
         const data = new FormData(e.currentTarget);
 
         const address={
@@ -14,9 +24,10 @@ const DeliveryAddressForm = () => {
             city:data.get("city"),
             state:data.get("state"),
             zipCode:data.get("zip"),
-            mobile:data.get("phoneNumber")
+            phoneNumber:data.get("phoneNumber")
         }
-
+        const orderData = {address,navigate}
+        dispatch(createOrder(orderData))
         console.log(address);
     }
     return (
@@ -24,7 +35,7 @@ const DeliveryAddressForm = () => {
             <Grid2 container spacing={4}>
                 <Grid2 item size={{xs:12, lg:5}} className="border rounded-e-md shadow-md h-[30.5rem] overflow-y-scroll">
                     <div className="p-5 py-7 border-b cursor-pointer">
-                        <AddressCard />
+                        <AddressCard address={order.order?.shippingAddress} />
                         <Button sx={{ mt: 2, bgcolor: "RGB(145 85 253)" }} size='large' variant='contained'>Deliver Here</Button>
                     </div>
                 </Grid2>
