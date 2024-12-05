@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { findProductById } from "../../../State/Product/Action";
 import { getOrderById } from "../../../State/Order/Action";
 import { useLocation } from "react-router-dom";
+import { createPayment } from "../../../State/Payment/Action";
 
 const OrderSummery = () => {
 
@@ -18,6 +19,10 @@ const OrderSummery = () => {
     useEffect(() => {
         dispatch(getOrderById(orderId))
     },[orderId])
+
+    const handleCheckout = () => {
+        dispatch(createPayment(orderId))
+    }
 
     return (
         <div>
@@ -51,7 +56,7 @@ const OrderSummery = () => {
                                     <span className="text-green-600">₹{order.order?.totalDiscountedPrice}</span>
                                 </div>
                             </div>
-                            <Button variant="contained" className="w-full mt-5" sx={{ px: "2.5rem", py: "0.7rem", bgcolor: "#9155fd" }}>
+                            <Button variant="contained" className="w-full mt-5" sx={{ px: "2.5rem", py: "0.7rem", bgcolor: "#9155fd" }} onClick={handleCheckout}>
                                 Checkout
                             </Button>
                         </div>

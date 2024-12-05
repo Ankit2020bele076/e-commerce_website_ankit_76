@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getOrderById } from '../../../State/Order/Action';
 import { updatePayment } from '../../../State/Payment/Action';
-import { Alert, AlertTitle } from '@mui/material';
+import { Alert, AlertTitle, Grid2 } from '@mui/material';
 import OrderTracker from '../Order/OrderTracker';
+import AddressCard from '../AddressCard/AddressCard';
 
 const PaymentSuccess = () => {
 
@@ -19,14 +20,15 @@ const PaymentSuccess = () => {
     useEffect(() => {
         const urlParam = new URLSearchParams(window.location.search);
 
-        setPaymentId(urlParam.get("razorpay_payment_link_id"))
+        setPaymentId(urlParam.get("razorpay_payment_id"))
         setPaymentStatus(urlParam.get("razorpay_payment_link_status"))
     }, [])
 
     useEffect(() => {
         const data = { orderId, paymentId }
         dispatch(getOrderById(orderId));
-        dispatch(updatePayment(data));
+        dispatch(updatePayment(data)); 
+        console.log("order: ",order.order);
     }, [orderId, paymentId])
 
     return (
@@ -41,19 +43,28 @@ const PaymentSuccess = () => {
 
             <Grid2 container className="space-y-5 py-5 pt-20">
 
-                {order.order?.orderItems.map((item) => {
-                    <Grid2 container item className="shadow-xl rounded-md p-5" sx={{ alignItems: "center", justifyContent: "space-between" }}>
+                {order.order?.orderItems.map((item) => 
+                    <Grid2 container item size={{xs:12}}className="shadow-xl rounded-md p-5" sx={{ alignItems: "center", justifyContent: "space-between" }}>
                         <Grid2 item size={{ xs: 6 }}>
                             <div className="flex items-center">
-                                <img classname="w-[5rem] h-[5rem] object-cover object-top" src="https://rukminim1.flixcart.com/image/612/612/xif0q/kurta/i/v/x/xxl-br-ad-kt-105-adwyn-peter-original-imagj4zyd2q7t6cg.jpeg?q=70" alt="" />
+                                <img className="w-[5rem] h-[5rem] object-cover object-top" src={item.product.imageUrl} alt="" />
 
-                                <div>
+                                    <div className="ml-5 space-y-2">
                                     <p>{item.product.title}</p>
-                                </div>
+                                    <div className="opacity-50 text-xs font-semibold space-x-5"><span>Color: {item.color}</span>
+                                    <span>Size: {item.siz}</span></div>
+                                    <p>Seller: {item.product.brand}</p>
+                                    <p>₹{item.price}</p>
+                                    </div>
+                                    
+                                
                             </div>
                         </Grid2>
+                        <Grid2 item>
+                            <AddressCard address={order.order?.shippingAddress} />
+                        </Grid2>
                     </Grid2>
-                })}
+                )}
             </Grid2>
 
         </div>
