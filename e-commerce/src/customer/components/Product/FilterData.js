@@ -11,8 +11,8 @@ export const color = [
 
 export const filters = [
     {
-        id: "color",
-        name: "Color",
+        id: "type",
+        name: "Type",
         options: [
             {value: "white", label: "White"},
             {value: "beige", label: "Beige"},
@@ -21,6 +21,17 @@ export const filters = [
             {value: "green", label: "Green"},
             {value: "purple", label: "Purple"},
             {value: "yellow", label: "Yellow"},
+        ],
+    },
+
+    {
+        id: "platform",
+        name: "Platform",
+        options: [
+            {value: "PC", label: "PC"},
+            {value: "PlayStation", label: "PlayStation"},
+            {value: "Xbox", label: "Xbox"},
+            {value: "Nintendo", label: "Nintendo"},
         ],
     },
 

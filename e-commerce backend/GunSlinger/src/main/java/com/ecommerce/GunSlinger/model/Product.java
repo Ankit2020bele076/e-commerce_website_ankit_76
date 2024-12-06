@@ -38,11 +38,15 @@ public class Product {
 	
 	private String brand;
 	
-	private String color;
+	private String type;
 	
 	@Embedded
 	@ElementCollection
 	private Set<Size> sizes = new HashSet<Size>();
+	
+	@Embedded
+	@ElementCollection
+	private Set<Platform> platform = new HashSet<Platform>();
 	
 	private String imageUrl;
 	
@@ -65,7 +69,7 @@ public class Product {
 	}
 
 	public Product(Long id, String title, String description, int price, int discountedPrice, int discountPercent,
-			int quantity, String brand, String color, Set<Size> sizes, String imageUrl, List<Rating> ratings,
+			int quantity, String brand, String type, Set<Size> sizes, Set<Platform> platform, String imageUrl, List<Rating> ratings,
 			List<Review> reviews, int numRatings, Category category, LocalDateTime createdAt) {
 		super();
 		this.productId = id;
@@ -76,8 +80,9 @@ public class Product {
 		this.discountPercent = discountPercent;
 		this.quantity = quantity;
 		this.brand = brand;
-		this.color = color;
+		this.type = type;
 		this.sizes = sizes;
+		this.platform = platform;
 		this.imageUrl = imageUrl;
 		this.ratings = ratings;
 		this.reviews = reviews;
@@ -150,14 +155,22 @@ public class Product {
 		this.brand = brand;
 	}
 
-	public String getColor() {
-		return color;
+	public String getType() {
+		return type;
 	}
 
-	public void setColor(String color) {
-		this.color = color;
+	public void setType(String type) {
+		this.type = type;
 	}
 
+	public Set<Platform> getPlatform(){
+		return platform;
+	}
+	
+	public void setPlatform(Set<Platform> platform) {
+		this.platform = platform;
+	}
+	
 	public Set<Size> getSizes() {
 		return sizes;
 	}
@@ -218,7 +231,7 @@ public class Product {
 	public String toString() {
 		return "Product [id=" + productId + ", title=" + title + ", description=" + description + ", price=" + price
 				+ ", discountedPrice=" + discountedPrice + ", discountPercent=" + discountPercent + ", quantity="
-				+ quantity + ", brand=" + brand + ", color=" + color + ", sizes=" + sizes + ", imageUrl=" + imageUrl
+				+ quantity + ", brand=" + brand + ", color=" + type + ", sizes=" + sizes + ", imageUrl=" + imageUrl
 				+ ", ratings=" + ratings + ", reviews=" + reviews + ", numRatings=" + numRatings + ", category="
 				+ category + ", createdAt=" + createdAt + "]";
 	}

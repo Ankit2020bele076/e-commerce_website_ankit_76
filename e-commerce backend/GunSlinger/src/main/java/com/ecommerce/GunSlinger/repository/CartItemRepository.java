@@ -12,7 +12,7 @@ import com.ecommerce.GunSlinger.model.Product;
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 	
-	@Query("Select ci from CartItem ci Where ci.cart=:cart And ci.product=:product And ci.size=:size And ci.userId=:userId")
-	public CartItem isCartItemExist(@Param("cart") Cart cart, @Param("product") Product product, @Param("size") String size, @Param("userId") Long userId);
+	@Query("Select ci from CartItem ci Where ci.cart=:cart And ci.product=:product And (ci.size=:size OR ci.platform=:platform) And ci.userId=:userId")
+	public CartItem isCartItemExist(@Param("cart") Cart cart, @Param("product") Product product, @Param("size") String size,@Param("platform") String platform, @Param("userId") Long userId);
 	
 }

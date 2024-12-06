@@ -60,14 +60,28 @@ public class ProductServiceImpl implements ProductService {
 		
 		Product product = new Product();
 		product.setTitle(req.getTitle());
-		product.setColor(req.getColor());
+		product.setType(req.getType());
 		product.setDescription(req.getDescription());
 		product.setDiscountedPrice(req.getDiscountedPrice());
 		product.setDiscountPercent(req.getDiscountPercent());
 		product.setImageUrl(req.getImageUrl());
 		product.setBrand(req.getBrand());
 		product.setPrice(req.getPrice());
-		product.setSizes(req.getSize());
+		
+		if(req.getSize() == null) {
+			product.setSizes(null);
+		}
+		else {
+			product.setSizes(req.getSize());
+		}
+		
+		if(req.getPlatform() == null) {
+			product.setPlatform(null);
+		}
+		else {
+			product.setPlatform(req.getPlatform());
+		}
+		
 		product.setQuantity(req.getQuantity());
 		product.setCategory(thirdLevel);
 		product.setCreatedAt(LocalDateTime.now());
@@ -81,6 +95,7 @@ public class ProductServiceImpl implements ProductService {
 	public String deleteProduct(Long productId) throws ProductException {
 		Product product = findProductById(productId);
 		product.getSizes().clear();
+		product.getPlatform().clear();
 		productRepo.delete(product);
 		return "Product deleted Successfully";
 	}
@@ -115,15 +130,15 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Page<Product> getAllProduct(String category, List<String> colors, List<String> sizes, Integer minPrice,
+	public Page<Product> getAllProduct(String category, List<String> types, List<String> sizes, List<String> platforms, Integer minPrice,
 			Integer maxPrice, Integer minDiscount, String sort, String stock, Integer pageNumber, Integer pageSize) {
 		
 		Pageable pageble = PageRequest.of(pageNumber, pageSize);
 		
 		List<Product> products = productRepo.filterProducts(category, minPrice, maxPrice, minDiscount, sort);
 		
-		if(!colors.isEmpty()) {
-			products=products.stream().filter(p -> colors.stream().anyMatch(c -> c.equalsIgnoreCase(p.getColor()))).collect(Collectors.toList());
+		if(!types.isEmpty()) {
+			products=products.stream().filter(p -> types.stream().anyMatch(c -> c.equalsIgnoreCase(p.getType()))).collect(Collectors.toList());
 		}
 		
 		if(stock!=null) {

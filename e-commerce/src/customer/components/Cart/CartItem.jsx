@@ -29,7 +29,8 @@ const CartItem = ({item}) => {
                 </div>
                 <div className="ml-5 space-y-1">
                     <p className="font-semibold">{item.product.title}</p>
-                    <p className="opacity-70">Size: {item.size}, White</p>
+                    {item.size && <p className="opacity-70">Size: {item.size}, White</p>}
+                    {item.platform && <p className="opacity-70">Platform: {item.size}</p>}
                     <p className="opacity-70 mt-2">Seller: {item.product.brand}</p>
                     <div className="flex space-x-5 items-center text-gray-900 pt-6">
                         <p className="font-semibold">₹{item.price}</p>

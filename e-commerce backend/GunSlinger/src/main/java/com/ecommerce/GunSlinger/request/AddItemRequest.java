@@ -6,6 +6,8 @@ public class AddItemRequest {
 	
 	private String size;
 	
+	private String platform;
+	
 	private int quantity;
 	
 	private Integer price;
@@ -14,10 +16,11 @@ public class AddItemRequest {
 		
 	}
 
-	public AddItemRequest(Long productId, String size, int quantity, Integer price) {
+	public AddItemRequest(Long productId,String platform, String size, int quantity, Integer price) {
 		super();
 		this.productId = productId;
 		this.size = size;
+		this.platform = platform;
 		this.quantity = quantity;
 		this.price = price;
 	}
@@ -36,6 +39,14 @@ public class AddItemRequest {
 
 	public void setSize(String size) {
 		this.size = size;
+	}
+	
+	public String getPlatform() {
+		return platform;
+	}
+	
+	public void setPlatform(String platform) {
+		this.platform = platform;
 	}
 
 	public int getQuantity() {

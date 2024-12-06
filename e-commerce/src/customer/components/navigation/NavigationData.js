@@ -1,8 +1,8 @@
 export const navigation = {
     categories: [
       {
-        id: 'women',
-        name: 'Women',
+        id: 'Products',
+        name: 'Products',
         featured: [
           {
             name: 'New Arrivals',
@@ -19,48 +19,37 @@ export const navigation = {
         ],
         sections: [
           {
-            id: 'clothing',
-            name: 'Clothing',
+            id: 'Games',
+            name: 'Games',
             items: [
-              { name: 'Tops', href: '#' },
-              { name: 'Dresses', href: '#' },
-              { name: 'Pants', href: '#' },
-              { name: 'Denim', href: '#' },
-              { name: 'Sweaters', href: '#' },
-              { name: 'T-Shirts', href: '#' },
-              { name: 'Jackets', href: '#' },
-              { name: 'Activewear', href: '#' },
-              { name: 'Browse All', href: '#' },
+              { name: 'Action', href: '#' },
+              { name: 'RPGs', href: '#' },
+              { name: 'Sports', href: '#' },
+              { name: 'Simulation', href: '#' },
+              { name: 'FPS', href: '#' },
+              { name: 'Indie', href: '#' },
+              { name: 'Puzzle & Strategy', href: '#' },
+              { name: 'Horror', href: '#' },
+              { name: 'MOBA', href: '#' },
             ],
           },
+          
           {
-            id: 'accessories',
-            name: 'Accessories',
+            id: 'Consoles',
+            name: 'Consoles',
             items: [
-              { name: 'Watches', href: '#' },
-              { name: 'Wallets', href: '#' },
-              { name: 'Bags', href: '#' },
-              { name: 'Sunglasses', href: '#' },
-              { name: 'Hats', href: '#' },
-              { name: 'Belts', href: '#' },
-            ],
-          },
-          {
-            id: 'brands',
-            name: 'Brands',
-            items: [
-              { name: 'Full Nelson', href: '#' },
-              { name: 'My Way', href: '#' },
-              { name: 'Re-Arranged', href: '#' },
-              { name: 'Counterfeit', href: '#' },
-              { name: 'Significant Other', href: '#' },
+              { name: 'PlayStation', href: '#' },
+              { name: 'Xbox', href: '#' },
+              { name: 'Nintendo', href: '#' },
+              { name: 'PC Gaming', href: '#' },
+              { name: 'VR Platforms', href: '#' },
             ],
           },
         ],
       },
       {
-        id: 'men',
-        name: 'Men',
+        id: 'Lifestyle',
+        name: 'Lifestyle',
         featured: [
           {
             name: 'New Arrivals',
@@ -78,45 +67,33 @@ export const navigation = {
         ],
         sections: [
           {
-            id: 'clothing',
-            name: 'Clothing',
+            id: 'Merchandise',
+            name: 'Merchandise',
             items: [
-              { name: 'Tops', href: '#' },
-              { name: 'Pants', href: '#' },
-              { name: 'Sweaters', href: '#' },
-              { name: 'T-Shirts', href: '#' },
-              { name: 'Jackets', href: '#' },
-              { name: 'Activewear', href: '#' },
-              { name: 'Browse All', href: '#' },
+              { name: 'Apparel', href: '#' },
+              { name: 'Collectibles', href: '#' },
+              { name: 'Posters & Art Prints', href: '#' },
+              { name: 'Bags & Backpacks', href: '#' },
+              { name: 'Mugs & Drinkware', href: '#' },
+              { name: 'Limited Edition Bundles', href: '#' },
             ],
           },
           {
-            id: 'accessories',
+            id: 'Accessories',
             name: 'Accessories',
             items: [
-              { name: 'Watches', href: '#' },
-              { name: 'Wallets', href: '#' },
-              { name: 'Bags', href: '#' },
-              { name: 'Sunglasses', href: '#' },
-              { name: 'Hats', href: '#' },
-              { name: 'Belts', href: '#' },
+              { name: 'Controllers', href: '#' },
+              { name: 'Headsets', href: '#' },
+              { name: 'Keyboards', href: '#' },
+              { name: 'Mice', href: '#' },
+              { name: 'Monitors', href: '#' },
+              { name: 'Gaming Chairs', href: '#' },
+              { name: "Mouse Pads ", href: '#'},
+              { name: 'Console Skins', href: '#'}
             ],
           },
-          {
-            id: 'brands',
-            name: 'Brands',
-            items: [
-              { name: 'Re-Arranged', href: '#' },
-              { name: 'Counterfeit', href: '#' },
-              { name: 'Full Nelson', href: '#' },
-              { name: 'My Way', href: '#' },
-            ],
-          },
+          
         ],
       },
-    ],
-    pages: [
-      { name: 'Company', href: '#' },
-      { name: 'Stores', href: '#' },
     ],
   }

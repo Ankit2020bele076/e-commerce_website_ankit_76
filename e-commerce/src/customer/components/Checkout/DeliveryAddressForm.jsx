@@ -12,6 +12,20 @@ const DeliveryAddressForm = () => {
     const {order} = useSelector(store => store);
     console.log(order);
 
+    const handleDeliver=()=>{
+        const address={
+            firstName:order.firstName || '',
+            lastName:order.lastName || '',
+            streetAddress:order.streetAddress || '',
+            city:order.city || '',
+            state:order.state || '',
+            zipCode:order.zipCode || '',
+            phoneNumber:order.phoneNumber || '',
+        }
+        const orderData = {address,navigate}
+        dispatch(createOrder(orderData));
+    }
+
     const handleSubmit=(e)=>{
         e.preventDefault();
         
@@ -36,7 +50,7 @@ const DeliveryAddressForm = () => {
                 <Grid2 item size={{xs:12, lg:5}} className="border rounded-e-md shadow-md h-[30.5rem] overflow-y-scroll">
                     <div className="p-5 py-7 border-b cursor-pointer">
                         <AddressCard address={order.order?.shippingAddress} />
-                        <Button sx={{ mt: 2, bgcolor: "RGB(145 85 253)" }} size='large' variant='contained'>Deliver Here</Button>
+                        <Button onClick={handleDeliver} sx={{ mt: 2, bgcolor: "RGB(145 85 253)" }} size='large' variant='contained'>Deliver Here</Button>
                     </div>
                 </Grid2>
 

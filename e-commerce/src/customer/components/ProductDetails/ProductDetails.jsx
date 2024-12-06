@@ -51,6 +51,12 @@ const product = {
         { name: 'L', inStock: true },
         { name: 'XL', inStock: true },
     ],
+    platforms: [
+        { name: 'PC', inStock: true },
+        { name: 'PlayStation', inStock: true },
+        { name: 'Xbox', inStock: true },
+        { name: 'Nintendo', inStock: true }
+    ],
     description:
         'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
     highlights: [
@@ -70,17 +76,29 @@ function classNames(...classes) {
 
 export default function ProductDetails() {
     // const [selectedColor, setSelectedColor] = useState()
-    const [selectedSize, setSelectedSize] = useState()
+    const [selectedSize, setSelectedSize] = useState();
+    const [selectedPlatform, setSelectedPlatform] = useState();
     const navigate = useNavigate();
     const params = useParams();
     const dispatch = useDispatch();
     const {products} = useSelector(store => store)
 
+    console.log("products: ",products);
+
     const handleAddtoCart = () => {
-        const data = {productId:params.productId,size:selectedSize.name}
-        console.log("data: ",data);
-        dispatch(addItemToCart(data))
-        navigate('/cart')
+        if(products.product?.category.name == 'Merchandise'){
+            const data = {productId:params.productId,size:selectedSize.name}
+            console.log("data: ",data);
+            dispatch(addItemToCart(data))
+            navigate('/cart')
+        }
+        else{
+            const data = {productId:params.productId,platform:selectedPlatform.name}
+            console.log("data: ",data);
+            dispatch(addItemToCart(data))
+            navigate('/cart')
+        }
+        
     }
 
     useEffect(() => {
@@ -130,15 +148,6 @@ export default function ProductDetails() {
                                 className="h-full w-full object-cover object-center"
                             />
                         </div>
-                        <div className="flex flex-wrap space-x-5 max-w-[30rem] justify-center">
-                            {product.images.map((item)=> <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg max-w-[5rem] max-h-[5rem] mt-4">
-                                <img
-                                    alt={item.alt}
-                                    src={item.src}
-                                    className="h-full w-full object-cover object-center"
-                                />
-                            </div>) } 
-                        </div>
                     </div>
 
                     {/* Product info */}
@@ -166,9 +175,9 @@ export default function ProductDetails() {
                             </div>
 
                             <form className="mt-10">
-                                
+
                                 {/* Sizes */}
-                                <div className="mt-10">
+                                {products.product?.category.name == 'Merchandise' && <div className="mt-10">
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-sm font-medium text-gray-900">Size</h3>
                                     </div>
@@ -216,7 +225,61 @@ export default function ProductDetails() {
                                             ))}
                                         </RadioGroup>
                                     </fieldset>
-                                </div>
+                                </div>}
+                                
+                                
+                                {/* Platforms */}
+                                {products.product?.category.name != 'Merchandise' && <div className="mt-10">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="text-sm font-medium text-gray-900">Platform</h3>
+                                    </div>
+
+                                    <fieldset aria-label="Choose a size" className="mt-4">
+                                        <RadioGroup
+                                            value={selectedPlatform}
+                                            onChange={setSelectedPlatform}
+                                            className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4"
+                                        >
+                                            {product.platforms.map((platform) => (
+                                                <Radio
+                                                    key={platform.name}
+                                                    value={platform}
+                                                    disabled={!platform.inStock}
+                                                    className={classNames(
+                                                        platform.inStock
+                                                            ? 'cursor-pointer bg-white text-gray-900 shadow-sm'
+                                                            : 'cursor-not-allowed bg-gray-50 text-gray-200',
+                                                        'group relative flex items-center justify-center rounded-md border px-4 py-3 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none data-[focus]:ring-2 data-[focus]:ring-indigo-500 sm:flex-1 sm:py-6',
+                                                    )}
+                                                >
+                                                    <span>{platform.name}</span>
+                                                    {platform.inStock ? (
+                                                        <span
+                                                            aria-hidden="true"
+                                                            className="pointer-events-none absolute -inset-px rounded-md border-2 border-transparent group-data-[focus]:border group-data-[checked]:border-indigo-500"
+                                                        />
+                                                    ) : (
+                                                        <span
+                                                            aria-hidden="true"
+                                                            className="pointer-events-none absolute -inset-px rounded-md border-2 border-gray-200"
+                                                        >
+                                                            <svg
+                                                                stroke="currentColor"
+                                                                viewBox="0 0 100 100"
+                                                                preserveAspectRatio="none"
+                                                                className="absolute inset-0 size-full stroke-2 text-gray-200"
+                                                            >
+                                                                <line x1={0} x2={100} y1={100} y2={0} vectorEffect="non-scaling-stroke" />
+                                                            </svg>
+                                                        </span>
+                                                    )}
+                                                </Radio>
+                                            ))}
+                                        </RadioGroup>
+                                    </fieldset>
+                                </div>}
+                                
+                                
 
                                 <Button onClick={handleAddtoCart} variant="contained" sx={{px:"2rem",py:"1rem",bgcolor:"#9155fd"}}>
                                     Add to Cart
@@ -230,11 +293,11 @@ export default function ProductDetails() {
                                 <h3 className="sr-only">Description</h3>
 
                                 <div className="space-y-6">
-                                    <p className="text-base text-gray-900">{product.description}</p>
+                                    <p className="text-base text-gray-900">{products.product?.description}</p>
                                 </div>
                             </div>
 
-                            <div className="mt-10">
+                            {/* <div className="mt-10">
                                 <h3 className="text-sm font-medium text-gray-900">Highlights</h3>
 
                                 <div className="mt-4">
@@ -246,13 +309,13 @@ export default function ProductDetails() {
                                         ))}
                                     </ul>
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div className="mt-10">
                                 <h2 className="text-sm font-medium text-gray-900">Details</h2>
 
                                 <div className="mt-4 space-y-6">
-                                    <p className="text-sm text-gray-600">{product.details}</p>
+                                    <p className="text-sm text-gray-600">{products.product?.details}</p>
                                 </div>
                             </div>
                         </div>

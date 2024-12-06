@@ -7,7 +7,7 @@ const AddressCard = ({address}) => {
             {/* {address.firstName +" "+address.lastName} */}
             {address != undefined ? <div className="space-y-3">
                 <p className="font-semibold">{address?.firstName + " " + address?.lastName}</p>
-                <p>{address?.state}, {address?.streetAddress}, {address?.zipCode}</p>
+                <p>{address?.state}, {address?.city}, {address?.streetAddress}, {address?.zipCode}</p>
                 <div className="space-y-1">
                     <p className="font-semibold">Phone Number</p>
                     <p>{address?.phoneNumber}</p>

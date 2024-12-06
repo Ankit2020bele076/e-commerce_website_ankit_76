@@ -42,8 +42,9 @@ export default function Product() {
 
   const decodedQueryString = decodeURIComponent(location.search);
   const searchParams = new URLSearchParams(decodedQueryString);
-  const colorValue = searchParams.get("color");
+  const typeValue = searchParams.get("type");
   const size = searchParams.get("size");
+  const platform = searchParams.get("platform")
   const priceValue = searchParams.get("price");
   const discount = searchParams.get("discount");
   const sortValue = searchParams.get("sort");
@@ -92,8 +93,9 @@ export default function Product() {
 
     const data = {
       category: param.levelThree,
-      colors: colorValue || [],
+      types: typeValue || [],
       sizes: size || [],
+      platforms: platform || [],
       minPrice : minPrice,
       maxPrice : maxPrice,
       minDiscount : discount || 0,
@@ -105,7 +107,7 @@ export default function Product() {
 
     dispatch(findProducts(data))
 
-  },[param.levelThree, colorValue, size, priceValue, discount, sortValue, pageNumber, stock])
+  },[param.levelThree, typeValue, platform, size, priceValue, discount, sortValue, pageNumber, stock])
 
   return (
     <div className="bg-white">

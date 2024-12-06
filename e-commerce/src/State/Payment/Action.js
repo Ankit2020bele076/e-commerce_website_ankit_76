@@ -21,6 +21,7 @@ export const createPayment = (orderId) => async (dispatch) => {
 export const updatePayment = (reqData) => async (dispatch) => {
 
     dispatch({type:UPDATE_PAYMENT_REQUEST});
+    console.log("reqData: ",reqData);
 
     try {
         const {data} = await api.get(`/api/payments?payment_id=${reqData.paymentId}&order_id=${reqData.orderId}`);

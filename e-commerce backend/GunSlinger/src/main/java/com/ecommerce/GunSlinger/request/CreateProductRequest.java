@@ -3,6 +3,7 @@ package com.ecommerce.GunSlinger.request;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.ecommerce.GunSlinger.model.Platform;
 import com.ecommerce.GunSlinger.model.Size;
 
 public class CreateProductRequest {
@@ -21,9 +22,11 @@ public class CreateProductRequest {
 	
 	private String brand;
 	
-	private String color;
+	private String type;
 	
 	private Set<Size> size = new HashSet<Size>();
+	
+	private Set<Platform> platform = new HashSet<Platform>();
 	
 	private String imageUrl;
 	
@@ -34,8 +37,8 @@ public class CreateProductRequest {
 	private String thirdLevelCategory;
 
 	public CreateProductRequest(String title, String description, int price, int discountedPrice, int discountPercent,
-			int quantity, String brand, String color, Set<Size> size, String imageUrl, String topLevelCategory,
-			String secondLevelCategory, String thirdLevelCategory) {
+			int quantity, String brand, String type, Set<Size> size, Set<Platform> platform, String imageUrl,
+			String topLevelCategory, String secondLevelCategory, String thirdLevelCategory) {
 		super();
 		this.title = title;
 		this.description = description;
@@ -44,8 +47,9 @@ public class CreateProductRequest {
 		this.discountPercent = discountPercent;
 		this.quantity = quantity;
 		this.brand = brand;
-		this.color = color;
+		this.type = type;
 		this.size = size;
+		this.platform = platform;
 		this.imageUrl = imageUrl;
 		this.topLevelCategory = topLevelCategory;
 		this.secondLevelCategory = secondLevelCategory;
@@ -108,12 +112,12 @@ public class CreateProductRequest {
 		this.brand = brand;
 	}
 
-	public String getColor() {
-		return color;
+	public String getType() {
+		return type;
 	}
 
-	public void setColor(String color) {
-		this.color = color;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public Set<Size> getSize() {
@@ -122,6 +126,14 @@ public class CreateProductRequest {
 
 	public void setSize(Set<Size> size) {
 		this.size = size;
+	}
+
+	public Set<Platform> getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(Set<Platform> platform) {
+		this.platform = platform;
 	}
 
 	public String getImageUrl() {
@@ -160,10 +172,9 @@ public class CreateProductRequest {
 	public String toString() {
 		return "CreateProductRequest [title=" + title + ", description=" + description + ", price=" + price
 				+ ", discountedPrice=" + discountedPrice + ", discountPercent=" + discountPercent + ", quantity="
-				+ quantity + ", brand=" + brand + ", color=" + color + ", size=" + size + ", imageUrl=" + imageUrl
-				+ ", topLevelCategory=" + topLevelCategory + ", secondLevelCategory=" + secondLevelCategory
-				+ ", thirdLevelCategory=" + thirdLevelCategory + "]";
+				+ quantity + ", brand=" + brand + ", type=" + type + ", size=" + size + ", platform=" + platform
+				+ ", imageUrl=" + imageUrl + ", topLevelCategory=" + topLevelCategory + ", secondLevelCategory="
+				+ secondLevelCategory + ", thirdLevelCategory=" + thirdLevelCategory + "]";
 	}
-	
 	
 }

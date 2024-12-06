@@ -37,7 +37,7 @@ public class CartServiceImpl implements CartService {
 	public String addCartItem(Long userId, AddItemRequest req) throws ProductException {
 		Cart cart = cartRepo.findByUserId(userId);
 		Product product = productService.findProductById(req.getProductId());
-		CartItem isPresent = cartItemService.isCartItemExist(cart, product, req.getSize(), userId);
+		CartItem isPresent = cartItemService.isCartItemExist(cart, product, req.getSize(), req.getPlatform(), userId);
 		
 		if(isPresent == null) {
 			CartItem cartItem = new CartItem();

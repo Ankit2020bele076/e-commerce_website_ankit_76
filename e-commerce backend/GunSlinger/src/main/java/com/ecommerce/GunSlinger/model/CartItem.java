@@ -24,6 +24,8 @@ public class CartItem {
 	
 	private String size;
 	
+	private String platform;
+	
 	private int quantity;
 	
 	private Integer price;
@@ -36,13 +38,14 @@ public class CartItem {
 		
 	}
 
-	public CartItem(Long id, Cart cart, Product product, String size, int quantity, Integer price,
+	public CartItem(Long id, Cart cart, Product product, String size, String platform, int quantity, Integer price,
 			Integer discountedPrice, Long userId) {
 		super();
 		this.id = id;
 		this.cart = cart;
 		this.product = product;
 		this.size = size;
+		this.platform = platform;
 		this.quantity = quantity;
 		this.price = price;
 		this.discountedPrice = discountedPrice;
@@ -79,6 +82,14 @@ public class CartItem {
 
 	public void setSize(String size) {
 		this.size = size;
+	}
+	
+	public String getPlatform() {
+		return platform;
+	}
+	
+	public void setPlatform(String platform) {
+		this.platform = platform;
 	}
 
 	public int getQuantity() {
