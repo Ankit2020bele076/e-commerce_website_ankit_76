@@ -10,10 +10,11 @@ import {
 import { Avatar, Button, Menu, MenuItem } from "@mui/material";
 import { navigation } from "./NavigationData";
 import { deepPurple } from "@mui/material/colors";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AuthModel from "../../Auth/AuthModel";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, logout } from "../../../State/Auth/Action";
+import { findProducdByName } from "../../../State/Product/Action";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -23,13 +24,16 @@ export default function Navigation() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const param = useParams();
+  const [searchTerm, setSearchTerm] = useState(null);
 
   const [openAuthModal, setOpenAuthModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const openUserMenu = Boolean(anchorEl);
   const jwt = localStorage.getItem("jwt");
-  const {auth} = useSelector(store => store);
+  const { auth } = useSelector(store => store);
   const dispatch = useDispatch();
+  const {products} = useSelector(store => store);
 
   const handleUserClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -45,22 +49,26 @@ export default function Navigation() {
     setOpenAuthModal(false);
   };
 
+  const handleCart = () => {
+    navigate('/cart')
+  }
+
   useEffect(() => {
-    if(jwt){
+    if (jwt) {
       dispatch(getUser(jwt))
     }
-  },[jwt,auth.jwt])
+  }, [jwt, auth.jwt])
 
   useEffect(() => {
 
-    if(auth.user){
+    if (auth.user) {
       handleClose()
     }
-    if(location.pathname === '/login' || location.pathname === '/register'){
+    if (location.pathname === '/login' || location.pathname === '/register') {
       navigate(-1)
     }
 
-  },[auth.user])
+  }, [auth.user])
 
   const handleCategoryClick = (category, section, item, close) => {
     navigate(`/${category.id}/${section.id}/${item.name}`);
@@ -70,6 +78,32 @@ export default function Navigation() {
   const handleLogout = () => {
     dispatch(logout())
     handleCloseUserMenu()
+    navigate('/')
+  }
+
+  
+  const isProductPage = /^\/[^/]+\/[^/]+\/[^/]+$/.test(location.pathname);
+
+  
+
+  const handleSearch = (event) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+
+    const regex = /^\/([^/]+)\/([^/]+)\/([^/]+)$/;
+    const match = location.pathname.match(regex);
+    if (match) {
+      const [fullPath, levelOne, levelTwo, levelThree] = match;
+      const data = {
+        name: value,
+        category: levelThree,
+        pageNumber: 0,
+        pageSize: 10
+      }
+      dispatch(findProducdByName(data));
+    }
+
+    
   }
 
   return (
@@ -183,8 +217,8 @@ export default function Navigation() {
                             >
                               {section.items.map((item) => (
                                 <li key={item.name} className="flow-root">
-                                  <p onClick={() => handleCategoryClick(category, section, item, () => setOpen(false))} 
-                                   className="cursor-pointer -m-2 block p-2 text-gray-500">
+                                  <p onClick={() => handleCategoryClick(category, section, item, () => setOpen(false))}
+                                    className="cursor-pointer -m-2 block p-2 text-gray-500">
                                     {item.name}
                                   </p>
                                 </li>
@@ -197,18 +231,18 @@ export default function Navigation() {
                   </TabPanels>
                 </TabGroup>
 
-                
-                  {auth.user?.firstName==null &&
-                <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                  <div className="flow-root">
-                    <a
-                      href="/"
-                      className="-m-2 block p-2 font-medium text-gray-900"
-                    >
-                      Sign in
-                    </a>
-                  </div>
-                </div>}
+
+                {auth.user?.firstName == null &&
+                  <div className="space-y-6 border-t border-gray-200 px-4 py-6">
+                    <div className="flow-root">
+                      <a
+                        href="/"
+                        className="-m-2 block p-2 font-medium text-gray-900"
+                      >
+                        Sign in
+                      </a>
+                    </div>
+                  </div>}
 
                 {/* <div className="border-t border-gray-200 px-4 py-6">
                   <a href="/" className="-m-2 flex items-center p-2">
@@ -230,9 +264,9 @@ export default function Navigation() {
       </Transition>
 
       <header className="relative bg-white">
-        <p className="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
+        {/* <p className="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
           Get free delivery on orders over $100
-        </p>
+        </p> */}
 
         <nav aria-label="Top" className="mx-auto">
           <div className="border-b border-gray-200">
@@ -248,16 +282,16 @@ export default function Navigation() {
 
               {/* Logo */}
               <div className="ml-4 flex lg:ml-0">
-                  <span className="sr-only">Your Company</span>
-                  <img
-                    src="https://res.cloudinary.com/ddkso1wxi/image/upload/v1675919455/Logo/Copy_of_Zosh_Academy_nblljp.png"
-                    alt="Shopwithzosh"
-                    className="h-8 w-8 mr-2"
-                  />
+                <span className="sr-only">Your Company</span>
+                <img onClick={() => { navigate('/') }}
+                  src="https://res.cloudinary.com/ddkso1wxi/image/upload/v1675919455/Logo/Copy_of_Zosh_Academy_nblljp.png"
+                  alt="Gunslinger"
+                  className="cursor-pointer h-8 w-8 mr-2"
+                />
               </div>
 
               {/* Flyout menus */}
-              <PopoverGroup className="hidden lg:ml-8 lg:block lg:self-stretch z-10">
+            { auth.user?.firstName && <PopoverGroup className="hidden lg:ml-8 lg:block lg:self-stretch z-10">
                 <div className="flex h-full space-x-8">
                   {navigation.categories.map((category) => (
                     <Popover key={category.name} className="flex">
@@ -376,12 +410,57 @@ export default function Navigation() {
                     </Popover>
                   ))}
 
-                  
+
                 </div>
-              </PopoverGroup>
+              </PopoverGroup>}
+
+
+              {isProductPage && <form className="flex-grow mx-4">
+                <label
+                  htmlFor="default-search"
+                  className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+                >
+                  Search
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg
+                      className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    onChange={handleSearch}
+                    value={searchTerm}
+                    type="search"
+                    id="default-search"
+                    className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Search for products, categories..."
+                    required
+                  />
+                  {/* <button
+                    type="submit"
+                    className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  >
+                    Search
+                  </button> */}
+                </div>
+              </form>}
+
 
               <div className="ml-auto flex items-center">
-              {/* hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 */}
+                {/* hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 */}
                 <div className="flex flex-1 items-center justify-end space-x-6 sm:mr-6">
                   {auth.user?.firstName ? (
                     <div>
@@ -419,7 +498,7 @@ export default function Navigation() {
                         }}
                       >
                         <MenuItem>Profile</MenuItem>
-                        <MenuItem onClick={()=>navigate('/account/order')}>
+                        <MenuItem onClick={() => navigate('/account/order')}>
                           My Orders
                         </MenuItem>
                         <MenuItem onClick={handleLogout} >Logout</MenuItem>
@@ -436,7 +515,7 @@ export default function Navigation() {
                 </div>
 
                 {/* Search */}
-                <div className="flex items-center lg:ml-6">
+                {/* <div className="flex items-center lg:ml-6">
                 
                   <p  className="p-2 text-gray-400 hover:text-gray-500">
                     <span className="sr-only">Search</span>
@@ -446,23 +525,26 @@ export default function Navigation() {
                       aria-hidden="true"
                     />
                   </p>
-                </div>
+                </div> */}
+
+
+
 
                 {/* Cart */}
-                <div className="ml-4 flow-root lg:ml-6">
+                {auth.user?.firstName &&<div className="ml-4 flow-root lg:ml-6">
                   <Button
                     className="group -m-2 flex items-center p-2"
                   >
-                    <ShoppingBagIcon
+                    <ShoppingBagIcon onClick={handleCart}
                       className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                       aria-hidden="true"
                     />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                    {/* <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
                       2
-                    </span>
+                    </span> */}
                     <span className="sr-only">items in cart, view bag</span>
                   </Button>
-                </div>
+                </div>}
               </div>
             </div>
           </div>

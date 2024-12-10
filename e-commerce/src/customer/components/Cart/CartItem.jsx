@@ -9,11 +9,9 @@ import { removeCartItem, updateCartItem } from "../../../State/Cart/Action";
 const CartItem = ({item}) => {
 
     const dispatch = useDispatch();
-    // console.log("Item: ",item);
 
     const handleUpdateCartItem = (num) => {
         const data = {data:{quantity:item.quantity+num},cartItemId:item?.id}
-        // console.log("data: ",data)
         dispatch(updateCartItem(data));
     }
 

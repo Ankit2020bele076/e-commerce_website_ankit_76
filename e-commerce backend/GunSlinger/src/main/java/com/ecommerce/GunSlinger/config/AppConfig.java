@@ -44,7 +44,7 @@ public class AppConfig {
 		config.setExposedHeaders(Arrays.asList("Authorization"));
 		config.setMaxAge(3600L);
 		source.registerCorsConfiguration("/**", config);
-		return (CorsConfigurationSource) source;
+		return (CorsConfigurationSource)source;
 		
 	}
 	

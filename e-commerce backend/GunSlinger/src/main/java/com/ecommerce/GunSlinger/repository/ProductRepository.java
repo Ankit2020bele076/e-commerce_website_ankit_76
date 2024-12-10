@@ -25,4 +25,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 			,@Param("minDiscount") Integer minDiscount
 			,@Param("sort") String sort);
 	
+	@Query("Select p From Product p Where(p.category.parentCategory.name=:category)")
+	public List<Product> filterProductsByParent(@Param("category") String category);
+	
+	@Query("SELECT p FROM Product p WHERE (p.title LIKE CONCAT('%' , :name, '%') AND p.category.name=:category)")
+	public List<Product> filterProductsByNameSearch(@Param("category") String category,@Param("name") String name);
 }

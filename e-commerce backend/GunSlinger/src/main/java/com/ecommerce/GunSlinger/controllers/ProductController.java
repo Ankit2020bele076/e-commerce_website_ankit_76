@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.GunSlinger.exception.ProductException;
 import com.ecommerce.GunSlinger.model.Product;
+import com.ecommerce.GunSlinger.repository.ProductRepository;
 import com.ecommerce.GunSlinger.service.ProductService;
 
 @RestController
@@ -22,6 +23,9 @@ public class ProductController {
 	
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private ProductRepository productRepo;
 	
 	@GetMapping("/products")
 	public ResponseEntity<Page<Product>> findProductByCategoryHandler(@RequestParam String category,
@@ -33,6 +37,21 @@ public class ProductController {
 		
 		return new ResponseEntity<>(res,HttpStatus.ACCEPTED);
 		
+	}
+	
+	@GetMapping("/products/search")
+	public ResponseEntity<Page<Product>> searchProductByName(@RequestParam String category, @RequestParam String name, @RequestParam Integer pageNumber, @RequestParam Integer pageSize){
+		
+		Page<Product> res = productService.getProductByName(category, name, pageNumber, pageSize);
+		
+		return new ResponseEntity<Page<Product>>(res, HttpStatus.ACCEPTED);
+		
+	}
+	
+	@GetMapping("/products/all")
+	public ResponseEntity<List<Product>> findAllProducts(@RequestParam String category){
+		List<Product> product = productRepo.filterProductsByParent(category);
+		return new ResponseEntity<>(product,HttpStatus.ACCEPTED);
 	}
 	
 	@GetMapping("/products/id/{productId}")

@@ -167,4 +167,19 @@ public class ProductServiceImpl implements ProductService {
 		return products;
 	}
 
+	@Override
+	public Page<Product> getProductByName(String category, String name, Integer pageNumber, Integer pageSize) {
+		Pageable page = PageRequest.of(pageNumber, pageSize);
+		List<Product> products = productRepo.filterProductsByNameSearch(category, name);
+		if(products != null) {
+			products = products.stream().filter(p -> p.getQuantity() > 0).collect(Collectors.toList());
+		}
+		int startIndex = (int) page.getOffset();
+		int endIndex = Math.min(startIndex + page.getPageSize(), products.size());
+		
+		List<Product> pageContent = products.subList(startIndex, endIndex);
+		Page<Product> filteredProducts = new PageImpl<Product>(pageContent, page, products.size());
+		return filteredProducts;
+	}
+
 }

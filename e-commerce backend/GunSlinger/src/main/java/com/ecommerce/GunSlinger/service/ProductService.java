@@ -28,4 +28,6 @@ public interface ProductService {
 			Integer minPrice, Integer maxPrice, Integer minDiscount, String sort, String stock, Integer pageNumber,
 			Integer pageSize);
 	
+	Page<Product> getProductByName(String category, String name, Integer pageNumber, Integer pageSize);
+	
 }
