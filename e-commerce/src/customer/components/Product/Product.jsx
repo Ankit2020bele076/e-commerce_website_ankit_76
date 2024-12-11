@@ -17,7 +17,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import ProductCard from './ProductCard'
 import { mens_kurta } from '../../../Data/mens_kurta'
-import { filters, singleFilter } from './FilterData'
+import { filters, filters2, singleFilter } from './FilterData'
 import { FormControl, FormControlLabel, FormLabel, Pagination, Radio, RadioGroup } from '@mui/material'
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
@@ -96,8 +96,8 @@ export default function Product() {
       types: typeValue || [],
       sizes: size || [],
       platforms: platform || [],
-      minPrice : minPrice,
-      maxPrice : maxPrice,
+      minPrice : minPrice || 0,
+      maxPrice : maxPrice || 10000,
       minDiscount : discount || 0,
       sort : sortValue || "price_low",
       pageNumber : pageNumber -1,
@@ -277,38 +277,71 @@ export default function Product() {
                     <FilterListIcon/>
                 </div>
 
-                {filters.map((section) => (
+                {products.products?.content?.some((item) => item.category.parentCategory.name == "Merchandise") && filters.map((section) => (
                   <Disclosure key={section.id} as="div" className="border-b border-gray-200 py-6">
-                    <h3 className="-my-3 flow-root">
-                      <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                        <span className="font-medium text-gray-900">{section.name}</span>
-                        <span className="ml-6 flex items-center">
-                          <PlusIcon aria-hidden="true" className="size-5 group-data-[open]:hidden" />
-                          <MinusIcon aria-hidden="true" className="size-5 [.group:not([data-open])_&]:hidden" />
-                        </span>
-                      </DisclosureButton>
-                    </h3>
-                    <DisclosurePanel className="pt-6">
-                      <div className="space-y-4">
-                        {section.options.map((option, optionIdx) => (
-                          <div key={option.value} className="flex items-center">
-                            <input
-                              onChange={()=>handleFilter(option.value,section.id)}
-                              defaultValue={option.value}
-                              defaultChecked={option.checked}
-                              id={`filter-${section.id}-${optionIdx}`}
-                              name={`${section.id}[]`}
-                              type="checkbox"
-                              className="size-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                            />
-                            <label htmlFor={`filter-${section.id}-${optionIdx}`} className="ml-3 text-sm text-gray-600">
-                              {option.label}
-                            </label>
-                          </div>
-                        ))}
-                      </div>
-                    </DisclosurePanel>
-                  </Disclosure>
+                  <h3 className="-my-3 flow-root">
+                    <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+                      <span className="font-medium text-gray-900">{section.name}</span>
+                      <span className="ml-6 flex items-center">
+                        <PlusIcon aria-hidden="true" className="size-5 group-data-[open]:hidden" />
+                        <MinusIcon aria-hidden="true" className="size-5 [.group:not([data-open])_&]:hidden" />
+                      </span>
+                    </DisclosureButton>
+                  </h3>
+                  <DisclosurePanel className="pt-6">
+                    <div className="space-y-4">
+                      {section.options.map((option, optionIdx) => (
+                        <div key={option.value} className="flex items-center">
+                          <input
+                            onChange={()=>handleFilter(option.value,section.id)}
+                            defaultValue={option.value}
+                            defaultChecked={option.checked}
+                            id={`filter-${section.id}-${optionIdx}`}
+                            name={`${section.id}[]`}
+                            type="checkbox"
+                            className="size-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                          />
+                          <label htmlFor={`filter-${section.id}-${optionIdx}`} className="ml-3 text-sm text-gray-600">
+                            {option.label}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </DisclosurePanel>
+                </Disclosure>
+                ))}
+                {products.products?.content?.some((item) => item.category.parentCategory.name == "Games") && filters2.map((section) => (
+                  <Disclosure key={section.id} as="div" className="border-b border-gray-200 py-6">
+                  <h3 className="-my-3 flow-root">
+                    <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+                      <span className="font-medium text-gray-900">{section.name}</span>
+                      <span className="ml-6 flex items-center">
+                        <PlusIcon aria-hidden="true" className="size-5 group-data-[open]:hidden" />
+                        <MinusIcon aria-hidden="true" className="size-5 [.group:not([data-open])_&]:hidden" />
+                      </span>
+                    </DisclosureButton>
+                  </h3>
+                  <DisclosurePanel className="pt-6">
+                    <div className="space-y-4">
+                      {section.options.map((option, optionIdx) => (
+                        <div key={option.value} className="flex items-center">
+                          <input
+                            onChange={()=>handleFilter(option.value,section.id)}
+                            defaultValue={option.value}
+                            defaultChecked={option.checked}
+                            id={`filter-${section.id}-${optionIdx}`}
+                            name={`${section.id}[]`}
+                            type="checkbox"
+                            className="size-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                          />
+                          <label htmlFor={`filter-${section.id}-${optionIdx}`} className="ml-3 text-sm text-gray-600">
+                            {option.label}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </DisclosurePanel>
+                </Disclosure>
                 ))}
                 {singleFilter.map((section) => (
                   <Disclosure key={section.id} as="div" className="border-b border-gray-200 py-6">

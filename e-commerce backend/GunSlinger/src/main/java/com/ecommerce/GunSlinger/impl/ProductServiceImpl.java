@@ -107,6 +107,9 @@ public class ProductServiceImpl implements ProductService {
 		if(req.getQuantity()!=0) {
 			product.setQuantity(req.getQuantity());
 		}
+		if(req.getImageUrl() != null) {
+			product.setImageUrl(req.getImageUrl());
+		}
 		
 		return productRepo.save(product);
 		

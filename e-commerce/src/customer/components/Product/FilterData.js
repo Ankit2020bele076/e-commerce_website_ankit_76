@@ -9,6 +9,20 @@ export const color = [
     "Yellow",
 ]
 
+export const filters2 = [
+    {
+        id: "platform",
+        name: "Platform",
+        options: [
+            {value: "PC", label: "PC"},
+            {value: "PlayStation", label: "PlayStation"},
+            {value: "Xbox", label: "Xbox"},
+            {value: "Nintendo", label: "Nintendo"},
+        ],
+    },
+
+]
+
 export const filters = [
     {
         id: "type",
@@ -24,17 +38,7 @@ export const filters = [
         ],
     },
 
-    {
-        id: "platform",
-        name: "Platform",
-        options: [
-            {value: "PC", label: "PC"},
-            {value: "PlayStation", label: "PlayStation"},
-            {value: "Xbox", label: "Xbox"},
-            {value: "Nintendo", label: "Nintendo"},
-        ],
-    },
-
+    
     {
         id: "size",
         name: "Size",

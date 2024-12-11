@@ -11,7 +11,7 @@ import { mens_kurta } from "../../../Data/mens_kurta";
 import HomeSectionCard from '../HomeSectionCard/HomeSectionCard'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { findProductById } from '../../../State/Product/Action'
+import { findProductById, findProductByParent } from '../../../State/Product/Action'
 import { addItemToCart } from '../../../State/Cart/Action'
 
 const product = {
@@ -86,15 +86,20 @@ export default function ProductDetails() {
     console.log("products: ",products);
 
     const handleAddtoCart = () => {
-        if(products.product?.category.name == 'Merchandise'){
+        if(products.product?.category.parentCategory.name == 'Merchandise'){
             const data = {productId:params.productId,size:selectedSize.name}
             console.log("data: ",data);
             dispatch(addItemToCart(data))
             navigate('/cart')
         }
-        else{
+        else if(products.product?.category.parentCategory.name == 'Games'){
             const data = {productId:params.productId,platform:selectedPlatform.name}
             console.log("data: ",data);
+            dispatch(addItemToCart(data))
+            navigate('/cart')
+        }
+        else{
+            const data = {productId:params.productId}
             dispatch(addItemToCart(data))
             navigate('/cart')
         }
@@ -106,29 +111,17 @@ export default function ProductDetails() {
         dispatch(findProductById(data))
     },[params.productId])
 
+    useEffect(() => {
+        const category = products.product?.category.name;
+        dispatch(findProductByParent(category))
+    },[products.product])
+
     return (
         <div className="bg-white lg:px-20">
             <div className="pt-6">
                 <nav aria-label="Breadcrumb">
                     <ol role="list" className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                         {/* {product.breadcrumbs.map((breadcrumb) => ( */}
-                            <li key={products.product?.id}>
-                                <div className="flex items-center">
-                                    <a href="" className="mr-2 text-sm font-medium text-gray-900">
-                                        {products.product?.category.parentCategory.parentCategory.name}
-                                    </a>
-                                    <svg
-                                        fill="currentColor"
-                                        width={16}
-                                        height={20}
-                                        viewBox="0 0 16 20"
-                                        aria-hidden="true"
-                                        className="h-5 w-4 text-gray-300"
-                                    >
-                                        <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
-                                    </svg>
-                                </div>
-                            </li>
                             <li key={products.product?.id}>
                                 <div className="flex items-center">
                                     <a href="" className="mr-2 text-sm font-medium text-gray-900">
@@ -194,7 +187,7 @@ export default function ProductDetails() {
                             <form className="mt-10">
 
                                 {/* Sizes */}
-                                {products.product?.category.name == 'Merchandise' && <div className="mt-10">
+                                {products.product?.category.parentCategory.name == 'Merchandise' && <div className="mt-10">
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-sm font-medium text-gray-900">Size</h3>
                                     </div>
@@ -246,7 +239,7 @@ export default function ProductDetails() {
                                 
                                 
                                 {/* Platforms */}
-                                {products.product?.category.name != 'Merchandise' && <div className="mt-10">
+                                {products.product?.category.parentCategory.name == 'Games' && <div className="mt-10">
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-sm font-medium text-gray-900">Platform</h3>
                                     </div>
@@ -432,7 +425,7 @@ export default function ProductDetails() {
                 <section className="pt-10">
                     <h1 className="py-5 text-xl font-bold">Similar Products</h1>
                     <div className="flex flex-wrap space-y-5">
-                        {mens_kurta.map((item)=><HomeSectionCard product={item}/>)}
+                        {products.products?.data?.map((item)=><HomeSectionCard item={item}/>)}
                     </div>
                 </section>
             </div>
