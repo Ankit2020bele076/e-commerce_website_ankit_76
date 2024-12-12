@@ -31,6 +31,13 @@ public class OrderController {
 	@Autowired
 	private UserService userService;
 	
+	@GetMapping("/all")
+	public ResponseEntity<List<Order>> getAllOrdersHandler(@RequestHeader("Authorization") String jwt) throws UserException{
+		User user = userService.findUserProfileByJwt(jwt);
+		List<Order> orders = orderService.getAllOrders(user);
+		return new ResponseEntity<List<Order>>(orders,HttpStatus.ACCEPTED);
+	}
+	
 	
 	@PostMapping("/")
 	public ResponseEntity<Order> createOrder(@RequestBody Address shippingAddress, @RequestHeader("Authorization") String jwt) throws UserException{

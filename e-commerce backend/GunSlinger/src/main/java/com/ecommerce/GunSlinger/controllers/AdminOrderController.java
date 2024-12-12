@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.GunSlinger.exception.OrderException;
+import com.ecommerce.GunSlinger.exception.UserException;
 import com.ecommerce.GunSlinger.model.Order;
+import com.ecommerce.GunSlinger.model.User;
 import com.ecommerce.GunSlinger.response.ApiResponse;
 import com.ecommerce.GunSlinger.service.OrderService;
+import com.ecommerce.GunSlinger.service.UserService;
 
 @RestController
 @RequestMapping("/api/admin/orders")
@@ -24,9 +27,13 @@ public class AdminOrderController {
 	@Autowired
 	private OrderService orderService;
 	
+	@Autowired
+	private UserService userService;
+	
 	@GetMapping("/")
-	public ResponseEntity<List<Order>> getAllOrdersHandler(){
-		List<Order> orders = orderService.getAllOrders();
+	public ResponseEntity<List<Order>> getAllOrdersHandler(@RequestHeader("Authorization") String jwt) throws UserException{
+		User user = userService.findUserProfileByJwt(jwt);
+		List<Order> orders = orderService.getAllOrders(user);
 		return new ResponseEntity<List<Order>>(orders,HttpStatus.ACCEPTED);
 	}
 	

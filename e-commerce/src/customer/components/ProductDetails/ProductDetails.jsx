@@ -112,7 +112,7 @@ export default function ProductDetails() {
     },[params.productId])
 
     useEffect(() => {
-        const category = products.product?.category.name;
+        const category = products.product?.category.parentCategory.name;
         dispatch(findProductByParent(category))
     },[products.product])
 

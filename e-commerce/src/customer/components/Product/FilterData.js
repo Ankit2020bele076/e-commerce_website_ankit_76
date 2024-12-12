@@ -35,6 +35,7 @@ export const filters = [
             {value: "green", label: "Green"},
             {value: "purple", label: "Purple"},
             {value: "yellow", label: "Yellow"},
+            {value: "black", label: "Black"},
         ],
     },
 
